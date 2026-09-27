@@ -2,16 +2,16 @@ const mineflayer = require('mineflayer');
 
 function createBot() {
     const bot = mineflayer.createBot({
-        host: 'zaza.play.hosting', // <--- REEMPLAZA ESTO POR LA IP DE TU SERVER
-        port: 25878,                // Puerto predeterminado de Minecraft
-        username: 'RustyBot',    // Nombre genérico del bot/NPC dentro del juego
-        version: false              // Autodetecta la versión exacta del servidor (1.8 a 1.21+)
+        host: 'zaza.play.hosting', // Hostname de tu panel de Play Hosting
+        port: 25878,               // Puerto asignado a tu servidor
+        username: 'RustyBot',      // Nombre del NPC dentro del juego
+        version: '26.2'            // Versión exacta fijada para evitar el error de ping (ETIMEDOUT)
     });
 
     bot.on('spawn', () => {
         console.log(`[NPC] El bot ha aparecido correctamente en el mapa.`);
         // Si tu servidor No-Premium requiere contraseña, descomenta la línea de abajo:
-        // setTimeout(() => bot.chat('/login erickJKN'), 4000);
+        // setTimeout(() => bot.chat('/login TU_CONTRASEÑA'), 4000);
     });
 
     bot.on('login', () => {
@@ -63,7 +63,9 @@ function createBot() {
         setTimeout(createBot, 25000);
     });
 
-    bot.on('error', (err) => console.log(`[NPC] Error crítico de red detectado: ${err}`));
+    bot.on('error', (err) => {
+        console.log(`[NPC] Error crítico de red detectado: ${err.message || err}`);
+    });
 }
 
 createBot();
