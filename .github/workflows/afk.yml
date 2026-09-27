@@ -3,6 +3,8 @@ name: Minecraft NPC Bot 24/7
 on:
   push:
     branches: [ main ]
+  schedule:
+    - cron: '0 */5 * * *' # Reinicia el bot automáticamente cada 5 horas para evitar el límite de 6 horas de GitHub
   workflow_dispatch: # Permite encender el NPC de forma manual desde el panel web
 
 jobs:
@@ -16,9 +18,12 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: 18
+        cache: 'npm'
 
     - name: Instalar dependencias de Mineflayer
-      run: npm install mineflayer
+      run: |
+        npm init -y
+        npm install mineflayer
 
     - name: Ejecutar script del NPC
       run: node bot.js
